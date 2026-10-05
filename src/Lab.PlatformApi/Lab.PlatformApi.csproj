@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- TFM, nullable and analyzer settings come from Directory.Build.props. -->
+
+  <PropertyGroup>
+    <!-- Not a secret: it only names the per-user secrets folder under %APPDATA%\Microsoft\UserSecrets. -->
+    <UserSecretsId>8e6b1bce-5bc7-48ed-94fa-3a912b4e280b</UserSecretsId>
+  </PropertyGroup>
+
+</Project>

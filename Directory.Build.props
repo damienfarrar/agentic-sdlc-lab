@@ -1,0 +1,23 @@
+<Project>
+  <!--
+    Applies to every project under this folder. Settings live here once so project files
+    stay small, and so the agent (and you) can't drift them per project.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Build guardrails: a warning the agent cannot ignore beats a sentence in CLAUDE.md. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!--
+      IDE0005 (unused usings) only runs at build time when XML docs are generated. We want the
+      check, not mandatory doc comments, so CS1591 (missing XML comment) is silenced.
+    -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+</Project>

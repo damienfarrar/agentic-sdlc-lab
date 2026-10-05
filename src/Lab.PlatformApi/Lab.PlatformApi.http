@@ -1,0 +1,15 @@
+@Lab.PlatformApi_HostAddress = http://localhost:5101
+
+GET {{Lab.PlatformApi_HostAddress}}/health
+
+###
+
+GET {{Lab.PlatformApi_HostAddress}}/api/devices
+Accept: application/json
+
+###
+
+GET {{Lab.PlatformApi_HostAddress}}/api/devices/LAB-DEVICE-001
+Accept: application/json
+
+###

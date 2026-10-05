@@ -1,0 +1,53 @@
+@page "/"
+@using Lab.Portal.Models
+@inject HttpClient Http
+
+<PageTitle>Devices · Lab Portal</PageTitle>
+
+<h1>Devices</h1>
+<p class="note">Synthetic data served by Lab.PlatformApi. Nothing here is real.</p>
+
+@if (_error is not null)
+{
+    <p class="error">@_error</p>
+}
+else if (_devices is null)
+{
+    <p>Loading…</p>
+}
+else
+{
+    <table class="devices">
+        <thead>
+            <tr><th>Id</th><th>Model</th><th>Site</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var device in _devices)
+            {
+                <tr>
+                    <td>@device.Id</td>
+                    <td>@device.Model</td>
+                    <td>@device.Site</td>
+                    <td class="status-@device.Status.ToLowerInvariant()">@device.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<DeviceView>? _devices;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _devices = await Http.GetFromJsonAsync<List<DeviceView>>("api/devices") ?? [];
+        }
+        catch (HttpRequestException ex)
+        {
+            _error = $"Could not reach the Platform API at {Http.BaseAddress}. Is it running? ({ex.Message})";
+        }
+    }
+}

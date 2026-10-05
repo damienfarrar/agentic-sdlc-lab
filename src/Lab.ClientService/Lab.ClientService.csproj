@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <!-- TFM, nullable and analyzer settings come from Directory.Build.props. -->
+
+  <PropertyGroup>
+    <!-- Not a secret: it only names the per-user secrets folder under %APPDATA%\Microsoft\UserSecrets. -->
+    <UserSecretsId>dotnet-Lab.ClientService-ef040f73-6c1f-48e4-bae0-970a1388b335</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Version lives in Directory.Packages.props. Brings Microsoft.Extensions.Hosting transitively. -->
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" />
+  </ItemGroup>
+
+</Project>

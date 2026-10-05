@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    xUnit v3 test projects are executables: Microsoft.Testing.Platform (MTP) is built into the
+    test assembly, and `dotnet test` (MTP mode, see global.json) just runs it. That's why there's no
+    Microsoft.NET.Test.Sdk / xunit.runner.visualstudio here; those are VSTest-era packages.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Versions live in Directory.Packages.props. -->
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Lab.PlatformApi\Lab.PlatformApi.csproj" />
+    <ProjectReference Include="..\..\src\Lab.ClientService\Lab.ClientService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

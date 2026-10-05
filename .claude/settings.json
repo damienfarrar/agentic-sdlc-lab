@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "additionalDirectories": [
+      "../agentic-sdlc-lab-notes"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(!.env.example)",
+      "Read(*.pfx)",
+      "Read(*.p12)",
+      "Read(*.pem)",
+      "Read(*.key)",
+      "Read(*.jks)",
+      "Read(*.snk)",
+      "Read(secrets.json)",
+      "Read(appsettings.*.local.json)",
+      "Read(~/AppData/Roaming/Microsoft/UserSecrets/**)"
+    ]
+  }
+}
