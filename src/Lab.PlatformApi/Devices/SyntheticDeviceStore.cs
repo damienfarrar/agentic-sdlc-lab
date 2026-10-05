@@ -15,6 +15,10 @@ public sealed class SyntheticDeviceStore
 
     public IReadOnlyList<Device> GetAll() => Devices;
 
+    // Filtering lives here, not in the endpoint: a real registry would push it down into its query.
+    public IReadOnlyList<Device> GetByStatus(DeviceStatus status) =>
+        Array.FindAll(Devices, device => device.Status == status);
+
     public Device? Find(string id) =>
         Array.Find(Devices, device => string.Equals(device.Id, id, StringComparison.OrdinalIgnoreCase));
 }
