@@ -15,7 +15,9 @@
       "Read(//**/*.snk)",
       "Read(//**/secrets.json)",
       "Read(//**/appsettings.*.local.json)",
-      "Read(~/AppData/Roaming/Microsoft/UserSecrets/**)"
+      "Read(~/AppData/Roaming/Microsoft/UserSecrets/**)",
+      "Read(~/.config/configstore/snyk.json)",
+      "Edit(~/.config/configstore/snyk.json)"
     ]
   }
 }
