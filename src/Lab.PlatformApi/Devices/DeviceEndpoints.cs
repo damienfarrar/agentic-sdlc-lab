@@ -18,11 +18,12 @@ public static class DeviceEndpoints
     }
 
     // `status` binds as a string, not DeviceStatus?, so we own the parsing and the 400 body.
-    // Absent, empty or whitespace-only means "no filter". Padded values (" Online") still get a 400.
+    // Absent or empty (a cleared form field) means "no filter". Whitespace-only and padded values
+    // (" ", " Online") get a 400, so a stray space can't silently widen the result to every device.
     private static Results<Ok<IReadOnlyList<Device>>, ValidationProblem> GetDevices(
         string? status, SyntheticDeviceStore store)
     {
-        if (string.IsNullOrWhiteSpace(status))
+        if (string.IsNullOrEmpty(status))
         {
             return TypedResults.Ok(store.GetAll());
         }

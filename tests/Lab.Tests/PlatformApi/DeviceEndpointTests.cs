@@ -52,24 +52,15 @@ public sealed class DeviceEndpointTests(WebApplicationFactory<Program> factory)
         Assert.Equal(all, filtered);
     }
 
-    [Fact]
-    public async Task GetAll_WhitespaceStatus_ReturnsAllDevices()
-    {
-        using var client = factory.CreateClient();
-
-        var all = await client.GetFromJsonAsync<List<Device>>("/api/devices", TestContext.Current.CancellationToken);
-        var filtered = await client.GetFromJsonAsync<List<Device>>("/api/devices?status=%20", TestContext.Current.CancellationToken);
-
-        Assert.Equal(all, filtered);
-    }
-
     // "1", "99", "Online,Offline" and " Online" are all cases Enum.TryParse would accept.
+    // Whitespace-only is a 400 too: only empty means "no filter".
     [Theory]
     [InlineData("Bogus")]
     [InlineData("1")]
     [InlineData("99")]
     [InlineData("Online,Offline")]
     [InlineData(" Online")]
+    [InlineData(" ")]
     public async Task GetAll_InvalidStatus_Returns400ValidationProblem(string status)
     {
         using var client = factory.CreateClient();
