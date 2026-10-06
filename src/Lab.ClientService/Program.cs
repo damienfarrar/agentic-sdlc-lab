@@ -1,3 +1,5 @@
+using Lab.ClientService.Diagnostics;
+
 namespace Lab.ClientService;
 
 public class Program
@@ -11,6 +13,7 @@ public class Program
         builder.Services.AddWindowsService(options => options.ServiceName = "LabClientService");
 
         builder.Services.AddHeartbeat();
+        builder.Services.AddDiagnosticsCommands(builder.Configuration);
 
         builder.Build().Run();
     }

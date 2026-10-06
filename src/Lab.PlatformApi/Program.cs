@@ -1,3 +1,4 @@
+using Lab.PlatformApi.Commands;
 using Lab.PlatformApi.Devices;
 
 namespace Lab.PlatformApi;
@@ -13,6 +14,7 @@ public class Program
 
         builder.Services.AddHealthChecks();
         builder.Services.AddSingleton<SyntheticDeviceStore>();
+        builder.Services.AddSingleton<SyntheticCommandStore>();
 
         // Browsers may call this API only from the Portal's origin, and only with GET.
         // Origins come from config; appsettings.json defaults to none (deny all).
@@ -27,6 +29,7 @@ public class Program
 
         app.MapHealthChecks("/health");
         app.MapDeviceEndpoints();
+        app.MapCommandEndpoints();
 
         app.Run();
     }

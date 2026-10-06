@@ -18,3 +18,9 @@ GET {{Lab.PlatformApi_HostAddress}}/api/devices/LAB-DEVICE-001
 Accept: application/json
 
 ###
+
+# Claims (dequeues) the next command: 200 the first time, then 204.
+POST {{Lab.PlatformApi_HostAddress}}/api/devices/LAB-DEVICE-001/commands/next
+Accept: application/json
+
+###
