@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "snyk": {
+      "type": "stdio",
+      "command": "C:\\Program Files\\Snyk\\1.1307.4\\snyk.exe",
+      "args": ["mcp", "-t", "stdio", "--profile=lite"]
+    }
+  }
+}
