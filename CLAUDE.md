@@ -52,6 +52,8 @@ Running Portal and API together requires a **trusted** ASP.NET Core dev certific
 - **Guardrails live in the build, not here.** `Directory.Build.props` sets warnings-as-errors and
   `latest-recommended` analyzers. `.editorconfig` makes top-level statements a build error (IDE0211).
   Fix the code rather than suppress a rule. If a suppression is truly needed, add a comment saying why.
+- **No `cd` in shell commands.** It persists between tool calls and has moved the working directory in five sessions. A PreToolUse hook
+  (`.claude/hooks/block-cd.ps1`) blocks it; use absolute paths and `git -C <dir>` instead. Deny rules were probed and miss `cd` into workspace folders.
 - **Package versions live only in `Directory.Packages.props`** (Central Package Management).
   `.csproj` files have `<PackageReference Include="..." />` with no version. New packages need approval first.
 - Shared build settings (TFM, nullable, analyzers) live in `Directory.Build.props`. Don't repeat them in project files.

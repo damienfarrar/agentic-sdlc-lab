@@ -19,5 +19,19 @@
       "Read(~/.config/configstore/snyk.json)",
       "Edit(~/.config/configstore/snyk.json)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -NonInteractive -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-cd.ps1\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
