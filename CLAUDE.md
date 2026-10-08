@@ -7,7 +7,8 @@ privileged Windows client service, and a web portal.
 ## Start of every session
 The plan, learning log and ADRs live in a **private sibling repo**, checked out next to this one at
 `../agentic-sdlc-lab-notes` (access is granted by `additionalDirectories` in `.claude/settings.json`).
-1. Read `../agentic-sdlc-lab-notes/docs/plan.md` (where we are in the 6 weeks).
+1. Read `../agentic-sdlc-lab-notes/docs/plan.md` (where we are in the 6 weeks), unless it's already in your context through an
+   import in a personal `CLAUDE.local.md`. An import from outside the repo only loads after it's approved in an interactive session.
 2. Read the **latest** entry at the bottom of `../agentic-sdlc-lab-notes/docs/learning-log.md`, especially its open questions.
 3. Before doing anything else, summarise in 2-3 lines where we are and what's next.
 

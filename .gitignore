@@ -507,6 +507,7 @@ secrets.json
 
 # Claude Code: personal settings stay local; shared .claude/settings.json is committed
 .claude/settings.local.json
+CLAUDE.local.md
 
 # Private notes live in a SIBLING repo (../agentic-sdlc-lab-notes), never inside this public one.
 # Backstop in case the notes are ever cloned or copied in here by mistake.
