@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Lab.ClientService.Diagnostics;
@@ -41,6 +42,13 @@ public static partial class CommandValidator
         if (!string.Equals(command.Type, CollectDiagnosticsType, StringComparison.Ordinal))
         {
             rejection = "Unknown command type.";
+            return false;
+        }
+
+        // An argument that belongs to another command type means a broken or hostile platform. A JSON null is absent.
+        if (command.IntervalSeconds is { ValueKind: not JsonValueKind.Null })
+        {
+            rejection = "Unexpected arguments for command type.";
             return false;
         }
 

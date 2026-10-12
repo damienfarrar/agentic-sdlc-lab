@@ -15,10 +15,18 @@ public sealed class SyntheticCommandStore
     public SyntheticCommandStore()
     {
         Enqueue("LAB-DEVICE-001", new DeviceCommand(
-            Guid.Parse("6f1c2d8e-0b7a-4c55-9e1f-3a2b4c5d6e7f"),
-            DeviceCommandType.CollectDiagnostics,
-            "case-1042",
-            [DiagnosticsSection.Environment, DiagnosticsSection.Service]));
+            Id: Guid.Parse("6f1c2d8e-0b7a-4c55-9e1f-3a2b4c5d6e7f"),
+            Type: DeviceCommandType.CollectDiagnostics,
+            OutputName: "case-1042",
+            Sections: [DiagnosticsSection.Environment, DiagnosticsSection.Service]));
+
+        // Fictional value, inside the client's default bounds of 10 s to 1 h.
+        Enqueue("LAB-DEVICE-003", new DeviceCommand(
+            Id: Guid.Parse("0d3b7e52-9a41-4f6c-8b2e-7c1d5a9f3e60"),
+            Type: DeviceCommandType.SetPollInterval,
+            OutputName: null,
+            Sections: null,
+            IntervalSeconds: 60));
     }
 
     public void Enqueue(string deviceId, DeviceCommand command) =>
