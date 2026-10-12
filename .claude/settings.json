@@ -21,7 +21,9 @@
       "mcp__snyk__snyk_auth",
       "mcp__snyk__snyk_logout",
       "mcp__snyk__snyk_trust",
-      "mcp__snyk__snyk_send_feedback"
+      "mcp__snyk__snyk_send_feedback",
+      "Skill(speckit-taskstoissues)",
+      "Skill(speckit-taskstoissues *)"
     ],
     "ask": [
       "Bash(git push)",
