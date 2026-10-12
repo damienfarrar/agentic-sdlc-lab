@@ -1,0 +1,6 @@
+# Spec Kit records a SHA-256 of each file it manages (.specify/integrations/*.manifest.json) and
+# `specify integration status` compares against it. Its files are LF; with core.autocrlf=true a fresh
+# Windows checkout turns them into CRLF and every one reports as modified. Keep them LF so the check
+# only flags real edits.
+.specify/** text eol=lf
+.claude/skills/speckit-*/** text eol=lf
