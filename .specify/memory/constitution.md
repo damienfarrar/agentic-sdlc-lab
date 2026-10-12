@@ -1,50 +1,69 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# agentic-sdlc-lab Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Synthetic and Public
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Everything in this repository is invented: no real organisations, people, products, endpoints,
+schemas, data formats or configuration. The repository is public. Secrets MUST NOT be committed;
+they come from `dotnet user-secrets` or environment variables. Nothing secret goes in
+`src/Lab.Portal/wwwroot`, because every browser downloads it. A spec or plan that needs real-looking
+data MUST stop and ask instead.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Hostile Input at Every Trust Boundary
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+The privileged client service treats everything it receives from the platform as untrusted. It
+acts only on typed, allowlisted commands, never on strings from the wire. File paths are re-checked
+after resolution. Every spec that crosses a trust boundary MUST name the boundary and what is
+validated there.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+Rationale: scanners don't treat platform responses as untrusted input, so this boundary is defended
+by design and tests, not by tooling.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### III. Verified, Not Assumed (NON-NEGOTIABLE)
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- A test that shows the flaw or the behaviour is written first and seen red.
+- Security-relevant tests are mutation-checked: break the code and confirm the test fails.
+- Done means `dotnet build` with 0 warnings and `dotnet test` all green.
+- A scanner's 0 is reported with evidence of what it covered (the `security-scan` skill).
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### IV. Guardrails Live in the Build
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Warnings are errors and analyzers are on. Code is fixed rather than a rule suppressed; any
+suppression carries a comment saying why. A rule that matters is enforced by the build or a hook,
+not only written down.
+
+### V. Least Privilege and Explicit Consent
+
+Adding a dependency, tool, external service or cloud resource requires the owner's approval first.
+The Windows service runs as a least-privilege account, and only the owner installs it. Plans MUST
+list any new dependency or privilege as an explicit decision.
+
+### VI. Explain the Why
+
+Every plan states its reasoning, the trade-off and the alternative it rejected. A real decision gets
+an ADR, kept in the private notes repository, not here.
+
+## Sources of Truth
+
+`CLAUDE.md` is the source of truth for conventions and commands: code style, Central Package
+Management, logging, test naming, build, test and run. This constitution does not repeat them; a
+plan checks against both. Where they conflict, the conflict is raised with the owner, not resolved
+silently.
+
+## Development Workflow and Quality Gates
+
+- Features go spec → plan → constitution check → tasks → implement.
+- A plan that fails the constitution check is revised or the deviation is justified in the plan
+  before tasks are generated.
+- Before a change is called done: build and tests pass (Principle III), and code that handles
+  untrusted input or adds a package has been through the `security-scan` skill.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution governs specs and plans in this repository. Only the repository owner amends it,
+through a reviewed commit. Versions follow semantic versioning: MAJOR for removing or redefining a
+principle, MINOR for adding one or materially expanding guidance, PATCH for wording. Every plan
+includes a constitution check; reviews verify it.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-10-12 | **Last Amended**: 2026-10-12
