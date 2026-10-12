@@ -22,6 +22,15 @@
       "mcp__snyk__snyk_logout",
       "mcp__snyk__snyk_trust",
       "mcp__snyk__snyk_send_feedback"
+    ],
+    "ask": [
+      "Bash(git push)",
+      "Bash(git push *)",
+      "PowerShell(git push)",
+      "PowerShell(git push *)",
+      "Edit(/.claude/**)",
+      "Edit(/.mcp.json)",
+      "Edit(/CLAUDE.md)"
     ]
   },
   "hooks": {
