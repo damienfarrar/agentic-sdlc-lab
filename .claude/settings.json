@@ -17,7 +17,11 @@
       "Read(//**/appsettings.*.local.json)",
       "Read(~/AppData/Roaming/Microsoft/UserSecrets/**)",
       "Read(~/.config/configstore/snyk.json)",
-      "Edit(~/.config/configstore/snyk.json)"
+      "Edit(~/.config/configstore/snyk.json)",
+      "mcp__snyk__snyk_auth",
+      "mcp__snyk__snyk_logout",
+      "mcp__snyk__snyk_trust",
+      "mcp__snyk__snyk_send_feedback"
     ]
   },
   "hooks": {
