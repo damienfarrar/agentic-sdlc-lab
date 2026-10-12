@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Lab.ClientService.Diagnostics;
 
 namespace Lab.Tests.ClientService;
@@ -108,6 +109,26 @@ public sealed class CommandValidatorTests
         CommandValidator.TryValidate(Command(outputName: marker), out _, out var rejection);
 
         Assert.DoesNotContain("LabEchoProbe", rejection, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void TryValidate_DiagnosticsWithIntervalSeconds_Rejected()
+    {
+        Assert.False(CommandValidator.TryValidate(Command() with { IntervalSeconds = Raw("60") }, out _, out var rejection));
+        Assert.Equal("Unexpected arguments for command type.", rejection);
+    }
+
+    // A JSON null is the same as the field being absent.
+    [Fact]
+    public void TryValidate_DiagnosticsWithNullIntervalSeconds_Accepted()
+    {
+        Assert.True(CommandValidator.TryValidate(Command() with { IntervalSeconds = Raw("null") }, out _, out _));
+    }
+
+    private static JsonElement Raw(string json)
+    {
+        using var document = JsonDocument.Parse(json);
+        return document.RootElement.Clone();
     }
 
     private static DeviceCommandDto Command(string outputName = "case-1042", string?[]? sections = null) =>

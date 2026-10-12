@@ -52,6 +52,56 @@ public sealed class DiagnosticsOptionsTests
         Assert.Throws<OptionsValidationException>(() => provider.GetRequiredService<IOptions<DiagnosticsOptions>>().Value);
     }
 
+    [Fact]
+    public void Enabled_NoBounds_UsesDefaults()
+    {
+        using var provider = BuildProvider(Enabled("https://platform.lab.test/", @"C:\LabData\diagnostics"));
+
+        var options = provider.GetRequiredService<IOptions<DiagnosticsOptions>>().Value;
+        Assert.Equal(TimeSpan.FromSeconds(10), options.MinPollInterval);
+        Assert.Equal(TimeSpan.FromHours(1), options.MaxPollInterval);
+    }
+
+    [Theory]
+    [InlineData("00:00:00", "01:00:00", "00:00:30")] // minimum not positive
+    [InlineData("-00:00:01", "01:00:00", "00:00:30")] // negative minimum
+    [InlineData("00:01:00", "00:00:30", "00:00:45")] // minimum above maximum
+    [InlineData("00:00:10", "1.00:00:01", "00:00:30")] // maximum over 24 hours
+    [InlineData("00:01:00", "01:00:00", "00:00:30")] // configured interval below the minimum
+    [InlineData("00:00:10", "00:00:20", "00:00:30")] // configured interval above the maximum
+    public void Enabled_InvalidBounds_FailsValidation(string min, string max, string pollInterval)
+    {
+        using var provider = BuildProvider(WithBounds(Enabled("https://platform.lab.test/", @"C:\LabData\diagnostics"), min, max, pollInterval));
+
+        Assert.Throws<OptionsValidationException>(() => provider.GetRequiredService<IOptions<DiagnosticsOptions>>().Value);
+    }
+
+    [Fact]
+    public void Enabled_MaxAtDayLimit_Valid()
+    {
+        using var provider = BuildProvider(WithBounds(Enabled("https://platform.lab.test/", @"C:\LabData\diagnostics"), "00:00:10", "1.00:00:00", "00:00:30"));
+
+        Assert.Equal(TimeSpan.FromDays(1), provider.GetRequiredService<IOptions<DiagnosticsOptions>>().Value.MaxPollInterval);
+    }
+
+    // Like the existing disabled case: bounds that are never used mustn't stop the service starting.
+    [Fact]
+    public void Disabled_InvalidBounds_StillStarts()
+    {
+        using var provider = BuildProvider(WithBounds(new() { ["Diagnostics:Enabled"] = "false" }, "00:01:00", "00:00:30", "00:00:45"));
+
+        Assert.False(provider.GetRequiredService<IOptions<DiagnosticsOptions>>().Value.Enabled);
+        Assert.Null(provider.GetService<PlatformCommandClient>());
+    }
+
+    private static Dictionary<string, string?> WithBounds(Dictionary<string, string?> values, string min, string max, string pollInterval)
+    {
+        values["Diagnostics:MinPollInterval"] = min;
+        values["Diagnostics:MaxPollInterval"] = max;
+        values["Diagnostics:PollInterval"] = pollInterval;
+        return values;
+    }
+
     private static Dictionary<string, string?> Enabled(string baseAddress, string outputDirectory) => new()
     {
         ["Diagnostics:Enabled"] = "true",

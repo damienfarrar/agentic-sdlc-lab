@@ -67,6 +67,39 @@ public sealed class CommandEndpointTests
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
+    [Fact]
+    public async Task ClaimNext_PollIntervalDevice_ReturnsSetPollIntervalOnce()
+    {
+        await using var factory = new WebApplicationFactory<Program>();
+        using var client = factory.CreateClient();
+        const string path = "/api/devices/LAB-DEVICE-003/commands/next";
+
+        using var first = await client.PostAsync(path, content: null, TestContext.Current.CancellationToken);
+        using var second = await client.PostAsync(path, content: null, TestContext.Current.CancellationToken);
+        var body = await first.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(HttpStatusCode.OK, first.StatusCode);
+        Assert.Contains("\"type\":\"SetPollInterval\"", body, StringComparison.Ordinal);
+        Assert.Contains("\"intervalSeconds\":60", body, StringComparison.Ordinal);
+        // Arguments that don't belong to the type are omitted, not sent as null.
+        Assert.DoesNotContain("outputName", body, StringComparison.Ordinal);
+        Assert.DoesNotContain("sections", body, StringComparison.Ordinal);
+        Assert.Equal(HttpStatusCode.NoContent, second.StatusCode);
+    }
+
+    [Fact]
+    public async Task ClaimNext_DiagnosticsCommand_OmitsIntervalSeconds()
+    {
+        await using var factory = new WebApplicationFactory<Program>();
+        using var client = factory.CreateClient();
+
+        using var response = await client.PostAsync(ClaimPath, content: null, TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.DoesNotContain("intervalSeconds", body, StringComparison.Ordinal);
+    }
+
     // GET must not dequeue: a crawler, a prefetch or a browser on the Portal origin could otherwise claim commands.
     [Fact]
     public async Task ClaimNext_Get_Returns405()

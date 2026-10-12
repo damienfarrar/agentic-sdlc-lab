@@ -15,7 +15,7 @@ public static class DiagnosticsServiceCollectionExtensions
             .BindConfiguration(DiagnosticsOptions.SectionName)
             .Validate(
                 DiagnosticsOptions.IsValid,
-                "When Diagnostics:Enabled is true, PlatformBaseAddress must be an absolute https URI, PollInterval must be positive and OutputDirectory must be a fully qualified path.")
+                "When Diagnostics:Enabled is true, PlatformBaseAddress must be an absolute https URI, OutputDirectory must be a fully qualified path, MinPollInterval must be positive and no more than MaxPollInterval, MaxPollInterval at most 24 hours, and PollInterval within them.")
             .ValidateOnStart();
 
         if (!configuration.GetValue<bool>($"{DiagnosticsOptions.SectionName}:{nameof(DiagnosticsOptions.Enabled)}"))

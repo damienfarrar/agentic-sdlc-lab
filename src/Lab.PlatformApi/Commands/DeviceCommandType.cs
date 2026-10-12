@@ -7,4 +7,5 @@ namespace Lab.PlatformApi.Commands;
 public enum DeviceCommandType
 {
     CollectDiagnostics,
+    SetPollInterval,
 }
